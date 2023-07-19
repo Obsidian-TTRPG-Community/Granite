@@ -13,7 +13,7 @@ If your plugin does not need CSS, delete this file.
 
 .gemmy-container {
         position: fixed;
-        bottom: 30px;
+        bottom: 60px;
         right: 30px;
 }
 
@@ -24,8 +24,8 @@ If your plugin does not need CSS, delete this file.
 }
 
 .gemmy-tooltip {
-        --background-modifier-message: #FFFFCB;
-        color: #202020;
+        --background-modifier-message: var(--background-primary);
+        color: var(--text-normal);
         font-size: var(--font-ui-medium);
         border-radius: 20px;
         padding: var(--size-4-3) var(--size-4-6);
