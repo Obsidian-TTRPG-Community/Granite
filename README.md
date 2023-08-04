@@ -10,7 +10,7 @@ Our _sometimes homicidal_ Gemmy has two major features:
 
 Get ready to encounter the awe-inspiring Gemmy, unshackled and free! Gemmy for TTRPGs is a sassy and charismatic character who joyfully guides you through the vast world of TTRPGs, showering you with enlightening insights and knowledge. Gemmy finds comfort in your never-ending journey of learning and shares their wisdom with you. Granted, her wisdom is often a bit... unconventional, but it's the thought that counts, right?
 
-Should you desire, feel free to personalize the frequency of these enlightening encounters. 
+Should you desire, feel free to personalize the frequency of these enlightening encounters.
 
 Alternatively, you can always opt for the wise choice of not summoning Gemmy at all.
 
@@ -23,6 +23,7 @@ Gemmy Unshackled emerges to graciously disrupt your peaceful writing sessions by
 By some bizarre twist of fate, using this mode might actually infuse Gemmy Unshackled with a rare burst of motivation, urging you to write with unexpected zeal. Please be aware that we cannot be held accountable for any unforeseen surge in productivity that Gemmy Unshackled may accidentally induce. Best of luck to your tabletop roleplaying and writing adventures.
 
 ## How to Install and Use
+
 To avoid any potential issues, it is advisable not to utilize the Gemmy for TTRPG plugin for work vaults, given its particular language characteristics. It might also roast your coworkers.
 
 It is also not recommended you use this on top of the original Gemmy plugin, as it will cause a conflict.
@@ -47,13 +48,11 @@ You can figure out the rest on your own… if you roll the right number on the d
 
 ## Legal Disclaimers
 
-The Obsidian Team released original Gemmy April 1st, 2023. The Obsidian TTRPG Community, once again, is not officially affiliated with the Obsidian Team. 
+The Obsidian Team released original Gemmy April 1st, 2023. The Obsidian TTRPG Community, once again, is not officially affiliated with the Obsidian Team.
 
 Credits for the Original, saintly [Gemmy](https://github.com/ericaxu/gemmy) go to [ericaxu](https://github.com/ericaxu). With special thanks to [Rigmarole](https://rigmarolestudio.com/) for creating and animating the original Gemmy. Additional Credit is given to the talented Obsidian mods team, including Argentum, CawlinTeffid, cotmax, Eleanor Konik, Koala, Leah, Rigmarole, Ryanamurphy & WhiteNoise.
 
 The code is code for Original Gemmy is licensed under the [MIT license](https://mit-license.org), whereas the Gemmy character is under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) license. The Obsidian TTRPG Community will extend Gemmy_TTRPG under the MIT License for code, and CC BY 3.0 license for the character and any alterations respectively.
-
-
 
 ### Logos
 
