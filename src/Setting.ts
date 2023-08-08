@@ -48,7 +48,7 @@ export class GemmySettingTab extends PluginSettingTab {
 						this.plugin.settings.animationSource = animationSource;
 
 						// Show Gemmy with the new animations after changing the source
-						this.plugin.gemmy.appear();
+						this.plugin.gemmy.reset();
 
 						await this.plugin.saveSettings();
 					}),

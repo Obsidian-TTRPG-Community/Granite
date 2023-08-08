@@ -4,6 +4,13 @@ import { GEMMY_IDLE_QUOTES, WRITING_MODE_QUOTES } from './Quotes';
 
 const BUBBLE_DURATION: number = 5000;
 
+export enum GemmyState {
+	VISIBLE = 'VISIBLE',
+	INVISIBLE = 'INVISIBLE',
+	DISAPPEARING = 'DISAPPEARING',
+	APPEARING = 'APPEARING',
+}
+
 export class Gemmy {
 	public readonly plugin: GemmyPlugin;
 	private readonly animations: Animations;
@@ -11,18 +18,18 @@ export class Gemmy {
 	gemmyEl: HTMLElement;
 	imageEl: HTMLElement;
 
-	appeared: boolean = false;
-	isDisappearing: boolean = false;
+	state: GemmyState;
 	inWritingMode: boolean = false;
 
 	idleTimeout: number;
 	writingModeTimeout: number;
-	disappearTimeout: number;
 
 	constructor(plugin: GemmyPlugin) {
 		this.plugin = plugin;
 
 		this.animations = new Animations(this.plugin);
+
+		this.state = GemmyState.INVISIBLE;
 
 		this.createGemmyEl();
 
@@ -38,6 +45,7 @@ export class Gemmy {
 		this.imageEl = this.gemmyEl.createEl('img', {});
 
 		this.gemmyEl.addEventListener('mouseenter', () => {
+			// ignore mouse events in writing mode
 			if (this.inWritingMode) {
 				return;
 			}
@@ -47,6 +55,7 @@ export class Gemmy {
 		});
 
 		this.gemmyEl.addEventListener('mouseleave', () => {
+			// ignore mouse events in writing mode
 			if (this.inWritingMode) {
 				return;
 			}
@@ -54,64 +63,80 @@ export class Gemmy {
 			this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
 			this.startNextIdleTimeout();
 		});
+
+		this.gemmyEl.hidden = true;
+		document.body.appendChild(this.gemmyEl);
 	}
 
-	appear() {
-		console.log('gemmy appear');
-
-		// stop him from leaving
-		window.clearTimeout(this.disappearTimeout);
-		this.isDisappearing = false;
+	async appear(): Promise<void> {
+		if (this.state === GemmyState.APPEARING || this.state === GemmyState.VISIBLE) {
+			return;
+		}
 
 		// show him
-		this.animations.play(this.imageEl, AnimationType.EMERGE);
+		this.state = GemmyState.APPEARING;
+		this.gemmyEl.hidden = false;
 
 		// Quicker if we're in writing mode
 		if (this.inWritingMode) {
 			this.animations.play(this.imageEl, AnimationType.POP_MOTION);
 
-			window.setTimeout(() => {
-				this.appeared = true;
+			await sleep(1800);
 
-				this.saySomething(WRITING_MODE_QUOTES, true);
-			}, 1800);
+			// another animation overrode this animation, so we quit
+			if (this.state !== GemmyState.APPEARING) {
+				return;
+			}
+
+			this.state = GemmyState.VISIBLE;
+			this.saySomething(WRITING_MODE_QUOTES, true);
 		} else {
 			this.animations.play(this.imageEl, AnimationType.EMERGE);
 
-			window.setTimeout(() => {
-				this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
-				this.appeared = true;
-			}, 3800);
-		}
+			await sleep(3800);
 
-		document.body.appendChild(this.gemmyEl);
-		this.gemmyEl.hidden = false;
-		this.appeared = true;
+			// another animation overrode this animation, so we quit
+			if (this.state !== GemmyState.APPEARING) {
+				return;
+			}
+
+			this.state = GemmyState.VISIBLE;
+			this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
+		}
 	}
 
-	disappear() {
+	async disappear(): Promise<void> {
 		// don't make gemmy disappear while he is already leaving
-		if (this.isDisappearing) {
+		if (this.state === GemmyState.DISAPPEARING || this.state === GemmyState.INVISIBLE) {
 			return;
 		}
 
-		this.isDisappearing = true;
+		this.state = GemmyState.DISAPPEARING;
 
-		this.idleTimeout && window.clearTimeout(this.idleTimeout);
-		this.writingModeTimeout && window.clearTimeout(this.writingModeTimeout);
+		if (this.idleTimeout) window.clearTimeout(this.idleTimeout);
+		if (this.writingModeTimeout) window.clearTimeout(this.writingModeTimeout);
 
 		this.animations.play(this.imageEl, AnimationType.DISAPPEAR_MOTION);
 		// remote tooltip
 		this.gemmyEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
 
-		this.disappearTimeout = window.setTimeout(() => {
-			// gemmy finished leaving
-			this.gemmyEl.hidden = true;
-			this.appeared = false;
-			this.isDisappearing = false;
-		}, 1300);
+		await sleep(1300);
 
-		// this.appeared = false;
+		// another animation overrode this animation, so we quit
+		if (this.state !== GemmyState.DISAPPEARING) {
+			return;
+		}
+
+		this.state = GemmyState.INVISIBLE;
+		this.gemmyEl.hidden = true;
+	}
+
+	async reset(): Promise<void> {
+		if (this.state === GemmyState.DISAPPEARING || this.state === GemmyState.INVISIBLE) {
+			await this.appear();
+		}
+
+		this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
 	}
 
 	onEditorChange(): void {
@@ -119,11 +144,13 @@ export class Gemmy {
 			return;
 		}
 
-		this.disappear();
+		if (this.state !== GemmyState.DISAPPEARING && this.state !== GemmyState.INVISIBLE) {
+			this.disappear();
+		}
 		this.setWritingModeTimeout();
 	}
 
-	enterWritingMode() {
+	enterWritingMode(): void {
 		this.inWritingMode = true;
 		this.disappear();
 
@@ -132,12 +159,12 @@ export class Gemmy {
 
 	leaveWritingMode() {
 		this.inWritingMode = false;
-		this.appear();
+		this.reset();
 
 		window.clearTimeout(this.writingModeTimeout);
 	}
 
-	setWritingModeTimeout() {
+	setWritingModeTimeout(): void {
 		if (this.writingModeTimeout) {
 			window.clearTimeout(this.writingModeTimeout);
 		}
@@ -149,7 +176,7 @@ export class Gemmy {
 		}, this.plugin.settings.writingModeGracePeriod * 1000);
 	}
 
-	startNextIdleTimeout() {
+	startNextIdleTimeout(): void {
 		// if the set time is 5 minutes, this will set timeout to be a random time between 4-6 minutes
 		// the range will be 80% - 120%
 		const randomFactor = 0.8 + 0.4 * Math.random();
@@ -169,12 +196,10 @@ export class Gemmy {
 		}, randomizedTimeout);
 	}
 
-	saySomething(quotes: string[], persistent: boolean) {
-		if (!this.appeared) {
+	async saySomething(quotes: string[], persistent: boolean): Promise<void> {
+		if (this.state !== GemmyState.VISIBLE) {
 			return;
 		}
-
-		console.log(this.inWritingMode);
 
 		const randomThing = quotes[Math.floor(Math.random() * quotes.length)];
 
@@ -185,18 +210,18 @@ export class Gemmy {
 		if (this.inWritingMode) {
 			this.animations.play(this.imageEl, AnimationType.ANGRY_MOTION);
 
-			window.setTimeout(() => {
-				this.animations.play(this.imageEl, AnimationType.DISAPPOINT_IMG);
-			}, 1000);
+			await sleep(1000);
+
+			this.animations.play(this.imageEl, AnimationType.DISAPPOINT_IMG);
 		} else {
 			this.animations.play(this.imageEl, AnimationType.LOOK_MOTION);
 		}
 
 		if (!persistent) {
-			window.setTimeout(() => {
-				this.gemmyEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
-				this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
-			}, BUBBLE_DURATION);
+			await sleep(BUBBLE_DURATION);
+
+			this.gemmyEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
+			this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
 		}
 	}
 }
