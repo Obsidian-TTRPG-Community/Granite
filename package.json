@@ -1,7 +1,7 @@
 {
-	"name": "@obsidian-ttrpg-community/gemmy-for-ttrpgs",
-	"version": "1.1.0",
-	"description": "The 2023 Obsidian April Fool's plugin, unshackled and expanded.",
+	"name": "@obsidian-ttrpg-community/granite",
+	"version": "0.1.0",
+	"description": "A Goal Reinforcing And Note Improving Tiny Entity",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

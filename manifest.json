@@ -1,7 +1,7 @@
 {
-	"id": "granite_helper",
+	"id": "granite",
 	"name": "Granite",
-	"version": "1.1.0",
+	"version": "0.1.0",
 	"minAppVersion": "0.19.0",
 	"description": "A Goal Reinforcing And Note Improving Tiny Entity",
 	"author": "Obsidian, and the Obsidian TTRPG Community",
