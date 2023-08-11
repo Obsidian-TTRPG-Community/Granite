@@ -1,60 +1,60 @@
 import { Animations, AnimationType } from './Animations';
-import GemmyPlugin from './main';
-import { GEMMY_IDLE_QUOTES, WRITING_MODE_QUOTES } from './Quotes';
+import GranitePlugin from './main';
+import { GRANITE_IDLE_QUOTES, WRITING_MODE_QUOTES } from './quotes/Quotes';
 
 const BUBBLE_DURATION: number = 5000;
 
-export enum GemmyState {
+export enum GraniteState {
 	VISIBLE = 'VISIBLE',
 	INVISIBLE = 'INVISIBLE',
 	DISAPPEARING = 'DISAPPEARING',
 	APPEARING = 'APPEARING',
 }
 
-export class Gemmy {
-	public readonly plugin: GemmyPlugin;
+export class Granite {
+	public readonly plugin: GranitePlugin;
 	private readonly animations: Animations;
 
-	gemmyEl: HTMLElement;
+	graniteEl: HTMLElement;
 	imageEl: HTMLElement;
 
-	state: GemmyState;
+	state: GraniteState;
 	inWritingMode: boolean = false;
 
 	idleTimeout: number;
 	writingModeTimeout: number;
 
-	constructor(plugin: GemmyPlugin) {
+	constructor(plugin: GranitePlugin) {
 		this.plugin = plugin;
 
 		this.animations = new Animations(this.plugin);
 
-		this.state = GemmyState.INVISIBLE;
+		this.state = GraniteState.INVISIBLE;
 
-		this.createGemmyEl();
+		this.createGraniteEl();
 
 		this.startNextIdleTimeout();
 	}
 
-	createGemmyEl() {
-		this.gemmyEl = createDiv('gemmy-container');
-		this.gemmyEl.setAttribute('aria-label-position', 'top');
-		this.gemmyEl.setAttribute('aria-label-delay', '0');
-		this.gemmyEl.setAttribute('aria-label-classes', 'gemmy-tooltip');
+	createGraniteEl() {
+		this.graniteEl = createDiv('granite-container');
+		this.graniteEl.setAttribute('aria-label-position', 'top');
+		this.graniteEl.setAttribute('aria-label-delay', '0');
+		this.graniteEl.setAttribute('aria-label-classes', 'granite-tooltip');
 
-		this.imageEl = this.gemmyEl.createEl('img', {});
+		this.imageEl = this.graniteEl.createEl('img', {});
 
-		this.gemmyEl.addEventListener('mouseenter', () => {
+		this.graniteEl.addEventListener('mouseenter', () => {
 			// ignore mouse events in writing mode
 			if (this.inWritingMode) {
 				return;
 			}
 
-			this.saySomething(GEMMY_IDLE_QUOTES, true);
+			this.saySomething(GRANITE_IDLE_QUOTES, true);
 			this.idleTimeout && clearTimeout(this.idleTimeout);
 		});
 
-		this.gemmyEl.addEventListener('mouseleave', () => {
+		this.graniteEl.addEventListener('mouseleave', () => {
 			// ignore mouse events in writing mode
 			if (this.inWritingMode) {
 				return;
@@ -64,18 +64,18 @@ export class Gemmy {
 			this.startNextIdleTimeout();
 		});
 
-		this.gemmyEl.hidden = true;
-		document.body.appendChild(this.gemmyEl);
+		this.graniteEl.hidden = true;
+		document.body.appendChild(this.graniteEl);
 	}
 
 	async appear(): Promise<void> {
-		if (this.state === GemmyState.APPEARING || this.state === GemmyState.VISIBLE) {
+		if (this.state === GraniteState.APPEARING || this.state === GraniteState.VISIBLE) {
 			return;
 		}
 
 		// show him
-		this.state = GemmyState.APPEARING;
-		this.gemmyEl.hidden = false;
+		this.state = GraniteState.APPEARING;
+		this.graniteEl.hidden = false;
 
 		// Quicker if we're in writing mode
 		if (this.inWritingMode) {
@@ -84,11 +84,11 @@ export class Gemmy {
 			await sleep(1800);
 
 			// another animation overrode this animation, so we quit
-			if (this.state !== GemmyState.APPEARING) {
+			if (this.state !== GraniteState.APPEARING) {
 				return;
 			}
 
-			this.state = GemmyState.VISIBLE;
+			this.state = GraniteState.VISIBLE;
 			this.saySomething(WRITING_MODE_QUOTES, true);
 		} else {
 			this.animations.play(this.imageEl, AnimationType.EMERGE);
@@ -96,43 +96,43 @@ export class Gemmy {
 			await sleep(3800);
 
 			// another animation overrode this animation, so we quit
-			if (this.state !== GemmyState.APPEARING) {
+			if (this.state !== GraniteState.APPEARING) {
 				return;
 			}
 
-			this.state = GemmyState.VISIBLE;
+			this.state = GraniteState.VISIBLE;
 			this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
 		}
 	}
 
 	async disappear(): Promise<void> {
-		// don't make gemmy disappear while he is already leaving
-		if (this.state === GemmyState.DISAPPEARING || this.state === GemmyState.INVISIBLE) {
+		// don't make granite disappear while they are already leaving
+		if (this.state === GraniteState.DISAPPEARING || this.state === GraniteState.INVISIBLE) {
 			return;
 		}
 
-		this.state = GemmyState.DISAPPEARING;
+		this.state = GraniteState.DISAPPEARING;
 
 		if (this.idleTimeout) window.clearTimeout(this.idleTimeout);
 		if (this.writingModeTimeout) window.clearTimeout(this.writingModeTimeout);
 
 		this.animations.play(this.imageEl, AnimationType.DISAPPEAR_MOTION);
 		// remote tooltip
-		this.gemmyEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
+		this.graniteEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
 
 		await sleep(1300);
 
 		// another animation overrode this animation, so we quit
-		if (this.state !== GemmyState.DISAPPEARING) {
+		if (this.state !== GraniteState.DISAPPEARING) {
 			return;
 		}
 
-		this.state = GemmyState.INVISIBLE;
-		this.gemmyEl.hidden = true;
+		this.state = GraniteState.INVISIBLE;
+		this.graniteEl.hidden = true;
 	}
 
 	async reset(): Promise<void> {
-		if (this.state === GemmyState.DISAPPEARING || this.state === GemmyState.INVISIBLE) {
+		if (this.state === GraniteState.DISAPPEARING || this.state === GraniteState.INVISIBLE) {
 			await this.appear();
 		}
 
@@ -144,7 +144,7 @@ export class Gemmy {
 			return;
 		}
 
-		if (this.state !== GemmyState.DISAPPEARING && this.state !== GemmyState.INVISIBLE) {
+		if (this.state !== GraniteState.DISAPPEARING && this.state !== GraniteState.INVISIBLE) {
 			this.disappear();
 		}
 		this.setWritingModeTimeout();
@@ -191,21 +191,21 @@ export class Gemmy {
 				return;
 			}
 
-			this.saySomething(GEMMY_IDLE_QUOTES, false);
+			this.saySomething(GRANITE_IDLE_QUOTES, false);
 			this.startNextIdleTimeout();
 		}, randomizedTimeout);
 	}
 
 	async saySomething(quotes: string[], persistent: boolean): Promise<void> {
-		if (this.state !== GemmyState.VISIBLE) {
+		if (this.state !== GraniteState.VISIBLE) {
 			return;
 		}
 
 		const randomThing = quotes[Math.floor(Math.random() * quotes.length)];
 
-		this.gemmyEl.setAttr('aria-label', randomThing);
-		this.gemmyEl.setAttr('aria-label-position', 'top');
-		this.gemmyEl.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, clientX: 10, clientY: 10 }));
+		this.graniteEl.setAttr('aria-label', randomThing);
+		this.graniteEl.setAttr('aria-label-position', 'top');
+		this.graniteEl.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, clientX: 10, clientY: 10 }));
 
 		if (this.inWritingMode) {
 			this.animations.play(this.imageEl, AnimationType.ANGRY_MOTION);
@@ -220,7 +220,7 @@ export class Gemmy {
 		if (!persistent) {
 			await sleep(BUBBLE_DURATION);
 
-			this.gemmyEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
+			this.graniteEl.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, clientX: 10, clientY: 10 }));
 			this.animations.play(this.imageEl, AnimationType.IDLE_MOTION);
 		}
 	}

@@ -1,29 +1,29 @@
 import { debounce, Plugin } from 'obsidian';
-import { DEFAULT_SETTINGS, GemmySettings, GemmySettingTab } from './Setting';
-import { Gemmy } from './Gemmy';
+import { DEFAULT_SETTINGS, GraniteSettings, GraniteSettingsTab } from './Setting';
+import { Granite } from './Granite';
 
-export default class GemmyPlugin extends Plugin {
-	settings: GemmySettings;
-	gemmy: Gemmy;
+export default class GranitePlugin extends Plugin {
+	settings: GraniteSettings;
+	granite: Granite;
 
 	async onload() {
 		await this.loadSettings();
 
-		this.gemmy = new Gemmy(this);
+		this.granite = new Granite(this);
 
 		this.addCommand({
 			id: 'show',
-			name: 'Show Gemmy',
+			name: 'Show Granite',
 			callback: () => {
-				this.gemmy.appear();
+				this.granite.appear();
 			},
 		});
 
 		this.addCommand({
 			id: 'hide',
-			name: 'Hide Gemmy',
+			name: 'Hide Granite',
 			callback: () => {
-				this.gemmy.disappear();
+				this.granite.disappear();
 			},
 		});
 
@@ -31,7 +31,7 @@ export default class GemmyPlugin extends Plugin {
 			id: 'enter-writing-mode',
 			name: 'Enter writing mode',
 			callback: () => {
-				this.gemmy.enterWritingMode();
+				this.granite.enterWritingMode();
 			},
 		});
 
@@ -39,28 +39,28 @@ export default class GemmyPlugin extends Plugin {
 			id: 'leave-writing-mode',
 			name: 'Leave writing mode',
 			callback: () => {
-				this.gemmy.leaveWritingMode();
+				this.granite.leaveWritingMode();
 			},
 		});
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new GemmySettingTab(this.app, this));
+		this.addSettingTab(new GraniteSettingsTab(this.app, this));
 
 		// debounce editor-change event on workspace
 		this.registerEvent(
 			this.app.workspace.on(
 				'editor-change',
 				debounce(() => {
-					this.gemmy.onEditorChange();
+					this.granite.onEditorChange();
 				}, 500),
 			),
 		);
 
-		this.app.workspace.onLayoutReady(() => this.gemmy.appear());
+		this.app.workspace.onLayoutReady(() => this.granite.appear());
 	}
 
 	onunload() {
-		this.gemmy.disappear();
+		this.granite.disappear();
 	}
 
 	async loadSettings() {

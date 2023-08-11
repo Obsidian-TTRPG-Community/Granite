@@ -1,7 +1,7 @@
 {
 	"name": "@obsidian-ttrpg-community/gemmy-for-ttrpgs",
 	"version": "1.1.0",
-	"description": "Our favorite sassy Obsidian Shard, flavoured for TTRPG.",
+	"description": "The 2023 Obsidian April Fool's plugin, unshackled and expanded.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

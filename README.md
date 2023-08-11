@@ -1,13 +1,13 @@
 # Granite, the Goal Reinforcing And Note Improving Tiny Entity
 
-Inspired by the saintly [Gemmy](https://github.com/ericaxu/gemmy), the Obsidian TTRPG Community has taken Gemmy on an adventure through time and space. She's met dragons, owlbears, robots, aliens, and so many interesting beings. Many of them have have decided to join her on the quest for the most sarcastic, the most scathing, and sometimes, the most helpful reactions to 
+Inspired by the saintly [Gemmy](https://github.com/ericaxu/gemmy), the Obsidian TTRPG Community has taken Gemmy on an adventure through time and space. She's met dragons, owl-bears, robots, aliens and so many interesting beings. Some of them have decided to join her on the quest for the most sarcastic, the most scathing, and sometimes, the most helpful reactions to writing in Obsidian. But she's not alone as her arch-rival, Granite, who also has been gathering friends on her quest, will stop at nothing to be the most helpful, the most encouraging, and the most annoying of them all.
 
 ## Features
 
 ### Multiple Characters
-- Gemmy, the original [Obsidian](https://www.obsidian.md/) Shard whom has all new quotes.
-- Granite, Gemmy's rival in all things unhelpful. She'll not stop until that purple shard succumbs to the power of her words. (:sparkles: Coming Soon)
-- Drake, the dashing and devious dragon who loves mothing more than to talk about dice. (:sparkles: Coming Soon)
+- Gemmy, the original [Obsidian](https://www.obsidian.md/) Shard who has all new quotes and is now 100% even more unhelpful.
+- Granite, Gemmy's rival in all things. She'll not stop until that purple shard succumbs to the power of her words. (:sparkles: Coming Soon)
+- Drake, the dashing and devious dragon who loves nothing more than to talk about dice. (:sparkles: Coming Soon)
 
 ### Random Quotes
 
@@ -51,10 +51,9 @@ The Obsidian Team released original Gemmy April 1st, 2023. The Obsidian TTRPG Co
 
 Credits for the Original, saintly [Gemmy](https://github.com/ericaxu/gemmy) go to [ericaxu](https://github.com/ericaxu). With special thanks to [Rigmarole](https://rigmarolestudio.com/) for creating and animating the original Gemmy. Additional Credit is given to the talented Obsidian mods team, including Argentum, CawlinTeffid, cotmax, Eleanor Konik, Koala, Leah, Rigmarole, Ryanamurphy & WhiteNoise.
 
-The code is code for Original Gemmy is licensed under the [MIT license](https://mit-license.org), whereas the Gemmy character is under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) license. The Obsidian TTRPG Community will extend Gemmy_TTRPG under the MIT License for code, and CC BY 3.0 license for the character and any alterations respectively.
+The code is code for Original Gemmy is licensed under the [MIT license](https://mit-license.org), whereas the Gemmy character is under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) license. The Obsidian TTRPG Community will extend Granite under the MIT License for code, and CC BY 3.0 license for the character and any alterations respectively.
 
 ### Logos
 
 The pre-sharded Obsidian Logo is adapted from:
 [Crystal shard icon](https://icon-icons.com/icon/Crystal-Shard/88819) By [Chanut is Industries](https://icon-icons.com/users/W52nHhY3W1VlvwyJTwS4d/icon-sets/)
-

@@ -8,22 +8,22 @@ If your plugin does not need CSS, delete this file.
 */
 
 :root {
-	--gemmy-size: 80px;
+	--granite-size: 80px;
 }
 
-.gemmy-container {
+.granite-container {
 	position: fixed;
 	bottom: 60px;
 	right: 30px;
 }
 
-.gemmy-container img {
-	width: var(--gemmy-size);
-	height: var(--gemmy-size);
-	border-radius: var(--gemmy-size);
+.granite-container img {
+	width: var(--granite-size);
+	height: var(--granite-size);
+	border-radius: var(--granite-size);
 }
 
-.gemmy-tooltip {
+.granite-tooltip {
 	--background-modifier-message: var(--background-primary);
 	color: var(--text-normal);
 	font-size: var(--font-ui-medium);

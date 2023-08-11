@@ -1,30 +1,30 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
-import GemmyPlugin from './main';
+import GranitePlugin from './main';
 
 export enum AnimationSourceType {
-	ORIGINAL = 'original',
-	DRACTONIC = 'draconic',
+	GEMMY = 'gemmy',
+	DRAKE = 'drake',
 }
 
-export interface GemmySettings {
+export interface GraniteSettings {
 	// Add the animationSource property to the settings interface
 	animationSource: AnimationSourceType;
-	// how often does Gemmy talk in idle mode, in minutes
+	// how often does Granite talk in idle mode, in minutes
 	idleTalkFrequency: number;
-	// the number of minutes you must write before Gemmy appears to mock you
+	// the number of minutes you must write before Granite appears to mock you
 	writingModeGracePeriod: number;
 }
 
-export const DEFAULT_SETTINGS: GemmySettings = {
-	animationSource: AnimationSourceType.ORIGINAL,
+export const DEFAULT_SETTINGS: GraniteSettings = {
+	animationSource: AnimationSourceType.GEMMY,
 	idleTalkFrequency: 1,
 	writingModeGracePeriod: 1,
 };
 
-export class GemmySettingTab extends PluginSettingTab {
-	plugin: GemmyPlugin;
+export class GraniteSettingsTab extends PluginSettingTab {
+	plugin: GranitePlugin;
 
-	constructor(app: App, plugin: GemmyPlugin) {
+	constructor(app: App, plugin: GranitePlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -36,19 +36,19 @@ export class GemmySettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Animation Source')
-			.setDesc('Choose the source of Gemmy animations.')
+			.setDesc('Choose the source of Granite animations.')
 			.addDropdown(dropdown =>
 				dropdown
-					.addOption(AnimationSourceType.ORIGINAL, 'Original')
-					.addOption(AnimationSourceType.DRACTONIC, 'Draconic')
+					.addOption(AnimationSourceType.GEMMY, 'Gemmy')
+					.addOption(AnimationSourceType.DRAKE, 'Drake')
 					.setValue(this.plugin.settings.animationSource)
 					.onChange(async value => {
 						// Explicitly cast the value to the correct type
 						const animationSource = value as AnimationSourceType;
 						this.plugin.settings.animationSource = animationSource;
 
-						// Show Gemmy with the new animations after changing the source
-						this.plugin.gemmy.reset();
+						// Show Granite with the new animations after changing the source
+						this.plugin.granite.reset();
 
 						await this.plugin.saveSettings();
 					}),
@@ -56,7 +56,7 @@ export class GemmySettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Idle talk frequency')
-			.setDesc('How often does Gemmy speak when idle, in minutes.')
+			.setDesc('How often does Granite speak when idle, in minutes.')
 			.addSlider(slider =>
 				slider
 					.setLimits(5, 60, 5)
@@ -70,7 +70,7 @@ export class GemmySettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Writing mode grace period')
-			.setDesc('How soon Gemmy starts to get disappointed after you stop tying in writing mode, in seconds.')
+			.setDesc('How soon Granite starts to get disappointed after you stop tying in writing mode, in seconds.')
 			.addSlider(slider =>
 				slider
 					.setLimits(5, 180, 5)

@@ -1,4 +1,4 @@
-export const GEMMY_IDLE_QUOTES = [
+export const GRANITE_IDLE_QUOTES = [
 	"You can't arrest us! We already ate the evidence!",
 	"Don't ever split the party!",
 	'If you kill a hive mind, is that murder or genocide?',
