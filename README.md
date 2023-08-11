@@ -1,6 +1,6 @@
 # Granite, the Goal Reinforcing And Note Improving Tiny Entity
 
-Inspired by the saintly [Gemmy](https://github.com/ericaxu/gemmy), the Obsidian TTRPG Community has taken Gemmy on an adventure through time and space. She's met dragons, owl-bears, robots, aliens and so many interesting beings. Some of them have decided to join her on the quest for the most sarcastic, the most scathing, and sometimes, the most helpful reactions to writing in Obsidian. But she's not alone as her arch-rival, Granite, who also has been gathering friends on her quest, will stop at nothing to be the most helpful, the most encouraging, and the most annoying of them all.
+Inspired by the saintly [Gemmy](https://github.com/ericaxu/gemmy), the Obsidian TTRPG Community has taken Gemmy on an adventure through time and space. She's met dragons, owl-bears, robots, aliens and so many interesting beings. Some of them have decided to join her on the quest for the most sarcastic, the most scathing, and sometimes, the most helpful reactions to writing in Obsidian. But she's not alone as her arch-rival, Granite, who also has been gathering friends on own her quest, will stop at nothing to be the most helpful, the most encouraging, and the most annoying of them all.
 
 ## Features
 
