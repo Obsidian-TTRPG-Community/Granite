@@ -10,7 +10,7 @@
 		"format": "prettier --write ."
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Obsidian TTRPG Community",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
