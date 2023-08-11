@@ -25,7 +25,7 @@ If your plugin does not need CSS, delete this file.
 
 .granite-tooltip {
 	--background-modifier-message: var(--background-primary);
-	color: var(--text-normal);
+	color: var(--text-normal) !important;
 	font-size: var(--font-ui-medium);
 	border-radius: 20px;
 	padding: var(--size-4-3) var(--size-4-6);
