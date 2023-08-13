@@ -1,6 +1,6 @@
 {
 	"name": "@obsidian-ttrpg-community/granite",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A Goal Reinforcing And Note Improving Tiny Entity",
 	"main": "main.js",
 	"scripts": {
