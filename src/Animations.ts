@@ -67,6 +67,8 @@ export class Animations {
 			[AnimationSourceType.DRAKE]: this.drakeAnimationMap,
 			[AnimationSourceType.GEMMY]: this.gemmyAnimationMap,
 		};
+
+		console.log('granite | build animation map', this.animationSourceMap);
 	}
 
 	/**

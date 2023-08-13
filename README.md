@@ -5,9 +5,10 @@ Inspired by the saintly [Gemmy](https://github.com/ericaxu/gemmy), the Obsidian 
 ## Features
 
 ### Multiple Characters
-- Gemmy, the original [Obsidian](https://www.obsidian.md/) Shard who has all new quotes and is now 100% even more unhelpful.
-- Granite, Gemmy's rival in all things. She'll not stop until that purple shard succumbs to the power of her words. (:sparkles: Coming Soon)
-- Drake, the dashing and devious dragon who loves nothing more than to talk about dice. (:sparkles: Coming Soon)
+
+-   Gemmy, the original [Obsidian](https://www.obsidian.md/) Shard who has all new quotes and is now 100% even more unhelpful.
+-   Granite, Gemmy's rival in all things. She'll not stop until that purple shard succumbs to the power of her words. (:sparkles: Coming Soon)
+-   Drake, the dashing and devious dragon who loves nothing more than to talk about dice. (:sparkles: Coming Soon)
 
 ### Random Quotes
 

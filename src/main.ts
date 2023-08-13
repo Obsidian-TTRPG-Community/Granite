@@ -1,5 +1,5 @@
 import { debounce, Plugin } from 'obsidian';
-import { DEFAULT_SETTINGS, GraniteSettings, GraniteSettingsTab } from './Setting';
+import { AnimationSourceType, DEFAULT_SETTINGS, GraniteSettings, GraniteSettingsTab } from './Setting';
 import { Granite } from './Granite';
 
 export default class GranitePlugin extends Plugin {
@@ -7,6 +7,8 @@ export default class GranitePlugin extends Plugin {
 	granite: Granite;
 
 	async onload() {
+		console.log('granite | load');
+
 		await this.loadSettings();
 
 		this.granite = new Granite(this);
@@ -60,11 +62,25 @@ export default class GranitePlugin extends Plugin {
 	}
 
 	onunload() {
+		console.log('granite | unload');
+
 		this.granite.disappear();
 	}
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+
+		// migrations
+		// @ts-ignore
+		if (this.settings.animationSource === 'dragon') {
+			this.settings.animationSource = AnimationSourceType.DRAKE;
+		}
+		// @ts-ignore
+		if (this.settings.animationSource === 'original') {
+			this.settings.animationSource = AnimationSourceType.GEMMY;
+		}
+
+		await this.saveSettings();
 	}
 
 	async saveSettings() {

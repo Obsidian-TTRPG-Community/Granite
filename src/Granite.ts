@@ -1,8 +1,13 @@
 import { Animations, AnimationType } from './Animations';
 import GranitePlugin from './main';
-import { GRANITE_IDLE_QUOTES, WRITING_MODE_QUOTES } from './quotes/Quotes';
+import { QuoteManager } from './QuoteManager';
 
 const BUBBLE_DURATION: number = 5000;
+
+export enum GraniteMode {
+	IDLE = 'IDLE',
+	WRITING = 'WRITING',
+}
 
 export enum GraniteState {
 	VISIBLE = 'VISIBLE',
@@ -14,12 +19,13 @@ export enum GraniteState {
 export class Granite {
 	public readonly plugin: GranitePlugin;
 	private readonly animations: Animations;
+	private readonly quotes: QuoteManager;
 
 	graniteEl: HTMLElement;
 	imageEl: HTMLElement;
 
 	state: GraniteState;
-	inWritingMode: boolean = false;
+	mode: GraniteMode;
 
 	idleTimeout: number;
 	writingModeTimeout: number;
@@ -28,8 +34,10 @@ export class Granite {
 		this.plugin = plugin;
 
 		this.animations = new Animations(this.plugin);
+		this.quotes = new QuoteManager(this.plugin);
 
 		this.state = GraniteState.INVISIBLE;
+		this.mode = GraniteMode.IDLE;
 
 		this.createGraniteEl();
 
@@ -46,17 +54,17 @@ export class Granite {
 
 		this.graniteEl.addEventListener('mouseenter', () => {
 			// ignore mouse events in writing mode
-			if (this.inWritingMode) {
+			if (this.mode === GraniteMode.WRITING) {
 				return;
 			}
 
-			this.saySomething(GRANITE_IDLE_QUOTES, true);
+			this.saySomething(true);
 			this.idleTimeout && clearTimeout(this.idleTimeout);
 		});
 
 		this.graniteEl.addEventListener('mouseleave', () => {
 			// ignore mouse events in writing mode
-			if (this.inWritingMode) {
+			if (this.mode === GraniteMode.WRITING) {
 				return;
 			}
 
@@ -78,7 +86,7 @@ export class Granite {
 		this.graniteEl.hidden = false;
 
 		// Quicker if we're in writing mode
-		if (this.inWritingMode) {
+		if (this.mode === GraniteMode.WRITING) {
 			this.animations.play(this.imageEl, AnimationType.POP_MOTION);
 
 			await sleep(1800);
@@ -89,7 +97,7 @@ export class Granite {
 			}
 
 			this.state = GraniteState.VISIBLE;
-			this.saySomething(WRITING_MODE_QUOTES, true);
+			this.saySomething(true);
 		} else {
 			this.animations.play(this.imageEl, AnimationType.EMERGE);
 
@@ -140,7 +148,7 @@ export class Granite {
 	}
 
 	onEditorChange(): void {
-		if (!this.inWritingMode) {
+		if (this.mode === GraniteMode.IDLE) {
 			return;
 		}
 
@@ -151,14 +159,14 @@ export class Granite {
 	}
 
 	enterWritingMode(): void {
-		this.inWritingMode = true;
+		this.mode = GraniteMode.WRITING;
 		this.disappear();
 
 		this.setWritingModeTimeout();
 	}
 
 	leaveWritingMode() {
-		this.inWritingMode = false;
+		this.mode = GraniteMode.IDLE;
 		this.reset();
 
 		window.clearTimeout(this.writingModeTimeout);
@@ -170,7 +178,7 @@ export class Granite {
 		}
 
 		this.writingModeTimeout = window.setTimeout(() => {
-			if (this.inWritingMode) {
+			if (this.mode === GraniteMode.WRITING) {
 				this.appear();
 			}
 		}, this.plugin.settings.writingModeGracePeriod * 1000);
@@ -187,27 +195,27 @@ export class Granite {
 		}
 
 		this.idleTimeout = window.setTimeout(() => {
-			if (this.inWritingMode) {
+			if (this.mode === GraniteMode.WRITING) {
 				return;
 			}
 
-			this.saySomething(GRANITE_IDLE_QUOTES, false);
+			this.saySomething(false);
 			this.startNextIdleTimeout();
 		}, randomizedTimeout);
 	}
 
-	async saySomething(quotes: string[], persistent: boolean): Promise<void> {
+	async saySomething(persistent: boolean): Promise<void> {
 		if (this.state !== GraniteState.VISIBLE) {
 			return;
 		}
 
-		const randomThing = quotes[Math.floor(Math.random() * quotes.length)];
+		const quote: string = this.quotes.getQuote();
 
-		this.graniteEl.setAttr('aria-label', randomThing);
+		this.graniteEl.setAttr('aria-label', quote);
 		this.graniteEl.setAttr('aria-label-position', 'top');
 		this.graniteEl.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, clientX: 10, clientY: 10 }));
 
-		if (this.inWritingMode) {
+		if (this.mode === GraniteMode.WRITING) {
 			this.animations.play(this.imageEl, AnimationType.ANGRY_MOTION);
 
 			await sleep(1000);
